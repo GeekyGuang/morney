@@ -15,7 +15,6 @@ export default {
 
 <style lang="scss" scoped>
 .content {
-  border: 1px solid green;
   overflow: auto;
   flex-grow: 1;
 }
