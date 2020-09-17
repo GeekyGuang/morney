@@ -1,20 +1,20 @@
 <template>
   <Layout class-prefix="layout">
     <NumberPad />
-    <type/>
+    <Types/>
     <notes/>
     <tags/>
   </Layout>
 </template>
 
 <script lang="ts">
-import NumberPad from '@/components/money/numberPad.vue';
-import Type from '@/components/money/type.vue';
-import Notes from '@/components/money/notes.vue';
-import Tags from '@/components/money/tags.vue';
+import NumberPad from '@/components/money/NumberPad.vue';
+import Types from '@/components/money/Types.vue';
+import Notes from '@/components/money/Notes.vue';
+import Tags from '@/components/money/Tags.vue';
 export default {
   name: 'Money',
-  components: {Tags, Notes, Type, NumberPad},
+  components: {Tags, Notes, Types, NumberPad},
 };
 </script>
 
