@@ -7,12 +7,10 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { Component, Prop } from 'vue-property-decorator'
+import { Component} from 'vue-property-decorator'
 
 @Component
 export default class Types extends Vue {
-  @Prop(Number) readonly name: number | undefined
-
   type = '-';
 
   selectType(type: string) {
@@ -20,15 +18,6 @@ export default class Types extends Vue {
       throw new Error('type is unknown');
     }
     this.type = type;
-  }
-
-  mounted(){
-    if (this.name === undefined) {
-      console.log("name is undefined")
-    } else {
-      console.log(this.name.toString());
-    }
-
   }
 
 }
