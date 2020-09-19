@@ -7,18 +7,12 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import Component, {mixins} from 'vue-class-component';
-
-
-const TypesProps = Vue.extend({
-  props: {
-    name: Number
-  }
-})
-
+import { Component, Prop } from 'vue-property-decorator'
 
 @Component
-export default class Types extends mixins(Vue, TypesProps) {
+export default class Types extends Vue {
+  @Prop(Number) readonly name: number | undefined
+
   type = '-';
 
   selectType(type: string) {
@@ -29,7 +23,12 @@ export default class Types extends mixins(Vue, TypesProps) {
   }
 
   mounted(){
-    console.log(this.name.toString());
+    if (this.name === undefined) {
+      console.log("name is undefined")
+    } else {
+      console.log(this.name.toString());
+    }
+
   }
 
 }
