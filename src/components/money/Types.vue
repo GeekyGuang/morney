@@ -7,10 +7,18 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import {Component} from 'vue-property-decorator';
+import Component, {mixins} from 'vue-class-component';
+
+
+const TypesProps = Vue.extend({
+  props: {
+    name: Number
+  }
+})
+
 
 @Component
-export default class Types extends Vue {
+export default class Types extends mixins(Vue, TypesProps) {
   type = '-';
 
   selectType(type: string) {
@@ -18,6 +26,10 @@ export default class Types extends Vue {
       throw new Error('type is unknown');
     }
     this.type = type;
+  }
+
+  mounted(){
+    console.log(this.name.toString());
   }
 
 }
