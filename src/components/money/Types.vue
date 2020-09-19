@@ -38,6 +38,9 @@ export default class Types extends Vue {
     position: relative;
 
     &.selected {
+      color: #f60;
+      font-weight: bold;
+      background: #d9d9d9;
       &::before {
         content: '';
         position: absolute;
@@ -45,7 +48,7 @@ export default class Types extends Vue {
         left: 0;
         height: 4px;
         width: 100%;
-        background: lighten(#333, 30%);
+        background: #f60;
       }
     }
   }

@@ -2,20 +2,20 @@
   <div class="numberPad">
     <div class="output">{{ output }}</div>
     <div class="buttons">
-      <button @click="outputChange" >1</button>
-      <button @click="outputChange" >2</button>
-      <button @click="outputChange" >3</button>
-      <button @click="deleteLast" >删除</button>
-      <button @click="outputChange" >4</button>
-      <button @click="outputChange" >5</button>
-      <button @click="outputChange" >6</button>
-      <button @click="clear" >清空</button>
-      <button @click="outputChange" >7</button>
-      <button @click="outputChange" >8</button>
-      <button @click="outputChange" >9</button>
-      <button class="OK" >OK</button>
+      <button @click="outputChange">1</button>
+      <button @click="outputChange">2</button>
+      <button @click="outputChange">3</button>
+      <button @click="deleteLast" class="tool">删除</button>
+      <button @click="outputChange">4</button>
+      <button @click="outputChange">5</button>
+      <button @click="outputChange">6</button>
+      <button @click="clear" class="tool">清空</button>
+      <button @click="outputChange">7</button>
+      <button @click="outputChange">8</button>
+      <button @click="outputChange">9</button>
+      <button class="OK tool">OK</button>
       <button @click="outputChange" class="zero">0</button>
-      <button @click="outputChange" >.</button>
+      <button @click="outputChange">.</button>
     </div>
   </div>
 </template>
@@ -37,7 +37,7 @@ export default class NumberPad extends Vue {
       } else {
         this.output += input;
       }
-      return
+      return;
     }
 
     if (this.output.indexOf('.') >= 0 && input === '.') {
@@ -47,16 +47,16 @@ export default class NumberPad extends Vue {
     this.output += input;
   }
 
-  deleteLast(){
-    if(this.output.length === 1) {
-      this.output = '0'
+  deleteLast() {
+    if (this.output.length === 1) {
+      this.output = '0';
     } else {
-      this.output = this.output.slice(0,-1)
+      this.output = this.output.slice(0, -1);
     }
   }
 
-  clear(){
-    this.output = '0'
+  clear() {
+    this.output = '0';
   }
 
 
@@ -125,8 +125,13 @@ export default class NumberPad extends Vue {
       }
 
       &:active {
+        color: white;
         font-weight: bold;
-        background: #fff;
+        background: #6FB7B7;
+      }
+
+      &.tool:active {
+        background: #ff6600;
       }
     }
   }
