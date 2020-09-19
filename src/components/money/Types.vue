@@ -45,7 +45,7 @@ export default class Types extends Vue {
         left: 0;
         height: 4px;
         width: 100%;
-        background: #333;
+        background: lighten(#333, 30%);
       }
     }
   }

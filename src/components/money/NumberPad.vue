@@ -2,20 +2,20 @@
   <div class="numberPad">
     <div class="output">{{ output }}</div>
     <div class="buttons">
-      <button @click="outputChange">1</button>
-      <button @click="outputChange">2</button>
-      <button @click="outputChange">3</button>
-      <button @click="deleteLast">删除</button>
-      <button @click="outputChange">4</button>
-      <button @click="outputChange">5</button>
-      <button @click="outputChange">6</button>
-      <button @click="clear">清空</button>
-      <button @click="outputChange">7</button>
-      <button @click="outputChange">8</button>
-      <button @click="outputChange">9</button>
-      <button class="OK">OK</button>
+      <button @click="outputChange" >1</button>
+      <button @click="outputChange" >2</button>
+      <button @click="outputChange" >3</button>
+      <button @click="deleteLast" >删除</button>
+      <button @click="outputChange" >4</button>
+      <button @click="outputChange" >5</button>
+      <button @click="outputChange" >6</button>
+      <button @click="clear" >清空</button>
+      <button @click="outputChange" >7</button>
+      <button @click="outputChange" >8</button>
+      <button @click="outputChange" >9</button>
+      <button class="OK" >OK</button>
       <button @click="outputChange" class="zero">0</button>
-      <button @click="outputChange">.</button>
+      <button @click="outputChange" >.</button>
     </div>
   </div>
 </template>
@@ -58,6 +58,7 @@ export default class NumberPad extends Vue {
   clear(){
     this.output = '0'
   }
+
 
 }
 </script>
@@ -114,7 +115,6 @@ export default class NumberPad extends Vue {
         background: darken($bg, 4*6%);
       }
 
-
       &.OK {
         height: 64px*2;
         float: right;
@@ -122,6 +122,11 @@ export default class NumberPad extends Vue {
 
       &.zero {
         width: 25*2%;
+      }
+
+      &:active {
+        font-weight: bold;
+        background: #fff;
       }
     }
   }
