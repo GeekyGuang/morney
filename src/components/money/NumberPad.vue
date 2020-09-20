@@ -21,9 +21,9 @@
         <icon name="plus"/>
       </button>
       <button @click="allClear" class="allClear">C</button>
-      <button @click="outputChange" class="zero">0</button>
+      <button @click="outputChange">0</button>
       <button @click="outputChange">.</button>
-      <button class="OK">OK</button>
+      <button @click="confirm" class="OK">OK</button>
     </div>
   </div>
 </template>
@@ -89,21 +89,32 @@ export default class NumberPad extends Vue {
     this.output = '0';
   }
 
-  round(num: number){
-    if(String(num).length > 16){
-      if(num>=0){
-        return parseFloat(Math.round(+num + 'e' + 10) / Math.pow(10, 10))
-      }else {
-        return -parseFloat(Math.round(+Math.abs(num) + 'e' + 10) / Math.pow(10, 10))
-      }
-    }else {
-      return num
+  round(output: string, operator: string) {
+    const Index = this.output.lastIndexOf(operator);
+    const number1 = Number(this.output.slice(0, Index));
+    const number2 = Number(this.output.slice(Index + 1));
+    let result;
+    if (operator === '+') {
+      result = number1 + number2;
+    } else if (operator === '-') {
+      result = number1 - number2;
     }
-
+    if (String(result).length > 16) {
+      if (result >= 0) {
+        return parseFloat(Math.round(+result + 'e' + 10) / Math.pow(10, 10));
+      } else {
+        return -parseFloat(Math.round(+Math.abs(result) + 'e' + 10) / Math.pow(10, 10));
+      }
+    } else {
+      return result;
+    }
 
   }
 
   caculator(operator: string) {
+    if (this.output.length === 16) {
+      return;
+    }
     const lastIndex = this.output.length - 1;
     const lastItem = this.output[lastIndex];
     if (this.output.length === 1 && '0+-'.indexOf(this.output) >= 0) {
@@ -113,19 +124,25 @@ export default class NumberPad extends Vue {
     } else if (lastItem === '.') {
       return;
     } else if (this.output.lastIndexOf('+') >= 0) {
-      const plusIndex = this.output.lastIndexOf('+');
-      const number1 = Number(this.output.slice(0, plusIndex));
-      const number2 = Number(this.output.slice(plusIndex + 1));
-      const result = this.round(number1 + number2);
+      const result = this.round(this.output, '+');
       this.output = result + operator;
     } else if (this.output.lastIndexOf('-') >= 0) {
-      const minusIndex = this.output.lastIndexOf('-');
-      const number1 = Number(this.output.slice(0, minusIndex));
-      const number2 = Number(this.output.slice(minusIndex + 1));
-      const result = this.round(number1 - number2);
+      const result = this.round(this.output, '-');
       this.output = result + operator;
     } else {
       this.output += operator;
+    }
+  }
+
+  confirm() {
+    if (this.output.endsWith('+') || this.output.endsWith('-')) {
+      this.output = this.output.slice(0, -1);
+    } else if (this.output.lastIndexOf('+') >= 0) {
+      this.output = this.round(this.output, '+').toString();
+    } else if (this.output.lastIndexOf('-') >= 0) {
+      this.output = this.round(this.output, '-').toString();
+    } else if (this.output.endsWith('.')) {
+      this.output = this.output.slice(0, -1);
     }
   }
 
