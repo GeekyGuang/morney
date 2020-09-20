@@ -2,20 +2,28 @@
   <div class="numberPad">
     <div class="output">{{ output }}</div>
     <div class="buttons">
-      <button @click="outputChange">1</button>
-      <button @click="outputChange">2</button>
-      <button @click="outputChange">3</button>
-      <button @click="deleteLast" class="tool">删除</button>
-      <button @click="outputChange">4</button>
-      <button @click="outputChange">5</button>
-      <button @click="outputChange">6</button>
-      <button @click="clear" class="tool">清空</button>
       <button @click="outputChange">7</button>
       <button @click="outputChange">8</button>
       <button @click="outputChange">9</button>
-      <button class="OK tool">OK</button>
+      <button @click="clear">
+        <icon name="delete"/>
+      </button>
+      <button @click="outputChange">4</button>
+      <button @click="outputChange">5</button>
+      <button @click="outputChange">6</button>
+      <button @click="caculator('-')">
+        <icon name="minus"/>
+      </button>
+      <button @click="outputChange">1</button>
+      <button @click="outputChange">2</button>
+      <button @click="outputChange">3</button>
+      <button @click="caculator('+')">
+        <icon name="plus"/>
+      </button>
+      <button @click="allClear" class="allClear">C</button>
       <button @click="outputChange" class="zero">0</button>
       <button @click="outputChange">.</button>
+      <button class="OK">OK</button>
     </div>
   </div>
 </template>
@@ -39,15 +47,37 @@ export default class NumberPad extends Vue {
       }
       return;
     }
-
-    if (this.output.indexOf('.') >= 0 && input === '.') {
+    const lastItem = this.output[this.output.length - 1];
+    const nextItem = this.output[this.output.length - 2];
+    if (lastItem === '.' && input === '.') {
       return;
     }
-
+    if (this.output.indexOf('+') > 0 && this.output.lastIndexOf('.') > this.output.indexOf('+') && input === '.') {
+      return;
+    }
+    if (this.output.indexOf('-') > 0 && this.output.lastIndexOf('.') > this.output.indexOf('-') && input === '.') {
+      return;
+    }
+    if (this.output.indexOf('+') < 0 &&
+        this.output.indexOf('-') < 0 &&
+        this.output.indexOf('.') >= 0 &&
+        input === '.') {
+      return;
+    }
+    if ('+-'.indexOf(lastItem) >= 0 && input === '.') {
+      return;
+    }
+    if ('+-'.indexOf(nextItem) >= 0 && lastItem === '0' && input !== '.') {
+      return;
+    }
+    if (this.output === '+') {
+      this.output = input;
+      return;
+    }
     this.output += input;
   }
 
-  deleteLast() {
+  clear() {
     if (this.output.length === 1) {
       this.output = '0';
     } else {
@@ -55,8 +85,48 @@ export default class NumberPad extends Vue {
     }
   }
 
-  clear() {
+  allClear() {
     this.output = '0';
+  }
+
+  round(num: number){
+    if(String(num).length > 16){
+      if(num>=0){
+        return parseFloat(Math.round(+num + 'e' + 10) / Math.pow(10, 10))
+      }else {
+        return -parseFloat(Math.round(+Math.abs(num) + 'e' + 10) / Math.pow(10, 10))
+      }
+    }else {
+      return num
+    }
+
+
+  }
+
+  caculator(operator: string) {
+    const lastIndex = this.output.length - 1;
+    const lastItem = this.output[lastIndex];
+    if (this.output.length === 1 && '0+-'.indexOf(this.output) >= 0) {
+      this.output = operator;
+    } else if ('+-'.indexOf(lastItem) >= 0) {
+      this.output = this.output.slice(0, lastIndex) + operator;
+    } else if (lastItem === '.') {
+      return;
+    } else if (this.output.lastIndexOf('+') >= 0) {
+      const plusIndex = this.output.lastIndexOf('+');
+      const number1 = Number(this.output.slice(0, plusIndex));
+      const number2 = Number(this.output.slice(plusIndex + 1));
+      const result = this.round(number1 + number2);
+      this.output = result + operator;
+    } else if (this.output.lastIndexOf('-') >= 0) {
+      const minusIndex = this.output.lastIndexOf('-');
+      const number1 = Number(this.output.slice(0, minusIndex));
+      const number2 = Number(this.output.slice(minusIndex + 1));
+      const result = this.round(number1 - number2);
+      this.output = result + operator;
+    } else {
+      this.output += operator;
+    }
   }
 
 
@@ -67,73 +137,56 @@ export default class NumberPad extends Vue {
 @import "~@/assets/style/helper.scss";
 
 .numberPad {
+  font-family: Consolas, monospace;
+
   .output {
     @extend %innerShadow;
     font-size: 34px;
-    font-family: Consolas, monospace;
     padding: 9px 16px;
     text-align: right;
   }
 
   .buttons {
-    @extend %clearFix;
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 1.5em;
 
     > button {
       width: 25%;
-      float: left;
       height: 64px;
       background: transparent;
       border: none;
 
-      $bg: #f2f2f2;
-
-      &:nth-child(1) {
-        background: $bg;
-      }
-
-      &:nth-child(2), &:nth-child(5) {
-        background: darken($bg, 4%);
-      }
-
-      &:nth-child(3), &:nth-child(6), &:nth-child(9) {
-        background: darken($bg, 4*2%);
-      }
-
-      &:nth-child(4), &:nth-child(7), &:nth-child(10) {
-        background: darken($bg, 4*3%);
-      }
-
-      &:nth-child(8), &:nth-child(11), &:nth-child(13) {
-        background: darken($bg, 4*4%);
-      }
-
-      &:nth-child(14) {
-        background: darken($bg, 4*5%);
-      }
-
-      &:nth-child(12) {
-        background: darken($bg, 4*6%);
-      }
-
-      &.OK {
-        height: 64px*2;
-        float: right;
-      }
-
-      &.zero {
-        width: 25*2%;
+      .icon {
+        width: .9em;
+        height: .9em;
+        color: #f60;
       }
 
       &:active {
-        color: white;
         font-weight: bold;
-        background: #6FB7B7;
+        background: radial-gradient(circle, rgba(255, 255, 255, 1) 0%, rgba(240, 240, 240, 1) 36%, rgba(255, 255, 255, 0) 37%, rgba(255, 255, 255, 0) 100%);
       }
 
-      &.tool:active {
-        background: #ff6600;
+      &.allClear {
+        font-size: 1em;
+        color: #f60;
       }
+
+      &.OK {
+        color: white;
+        background: radial-gradient(circle, rgba(255, 102, 0, 1) 0%, rgba(255, 102, 0, 1) 33%, rgba(255, 255, 255, 0) 34%, rgba(255, 255, 255, 0) 100%);
+
+        &:active {
+          font-weight: normal;
+          font-size: .9em;
+          background: radial-gradient(circle, rgba(255, 102, 0, 1) 0%, rgba(255, 102, 0, 1) 29%, rgba(255, 255, 255, 0) 30%, rgba(255, 255, 255, 0) 100%);
+        }
+      }
+
     }
+
+
   }
 }
 </style>
