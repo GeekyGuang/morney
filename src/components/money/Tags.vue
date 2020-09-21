@@ -15,31 +15,36 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import {Component, Prop} from 'vue-property-decorator';
+import {Component, Prop, Watch} from 'vue-property-decorator';
 
 @Component
 export default class Tags extends Vue {
   @Prop(Array) readonly dataSource: string[] | undefined;
   selectedTags: string[] = [];
 
+  @Watch('selectedTags')
+  onSelectedTagsChanged(val) {
+    this.$emit('update:value', val);
+  }
+
   toggle(tag) {
     const index = this.selectedTags.indexOf(tag);
-    if(index < 0){
+    if (index < 0) {
       this.selectedTags.push(tag);
     } else {
       this.selectedTags.splice(index, 1);
     }
   }
 
-  createTag(){
-    const tag = window.prompt("请输入标签名")
+  createTag() {
+    const tag = window.prompt('请输入标签名');
     if (tag === null) {return;}
-    if(tag.trim() === ''){
-      window.alert("标签名不能为空")
-    } else if(this.dataSource.indexOf(tag.trim()) >= 0){
-      window.alert(`"${tag.trim()}"标签已存在`)
+    if (tag.trim() === '') {
+      window.alert('标签名不能为空');
+    } else if (this.dataSource.indexOf(tag.trim()) >= 0) {
+      window.alert(`"${tag.trim()}"标签已存在`);
     } else {
-      this.$emit("update:dataSource", [...this.dataSource, tag])
+      this.$emit('update:dataSource', [...this.dataSource, tag]);
     }
   }
 }

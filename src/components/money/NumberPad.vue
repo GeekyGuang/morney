@@ -144,6 +144,8 @@ export default class NumberPad extends Vue {
     } else if (this.output.endsWith('.')) {
       this.output = this.output.slice(0, -1);
     }
+
+    this.$emit('update:value', this.output);
   }
 
 

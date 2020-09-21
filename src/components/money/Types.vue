@@ -7,7 +7,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { Component} from 'vue-property-decorator'
+import {Component, Watch} from 'vue-property-decorator';
 
 @Component
 export default class Types extends Vue {
@@ -18,6 +18,11 @@ export default class Types extends Vue {
       throw new Error('type is unknown');
     }
     this.type = type;
+  }
+
+  @Watch('type')
+  onTypeChanged(val) {
+    this.$emit('update:value', val);
   }
 
 }
@@ -41,6 +46,7 @@ export default class Types extends Vue {
       color: #f60;
       font-weight: bold;
       background: #d9d9d9;
+
       &::before {
         content: '';
         position: absolute;
