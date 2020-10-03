@@ -23,11 +23,11 @@ export default class Tags extends Vue {
   selectedTags: string[] = [];
 
   @Watch('selectedTags')
-  onSelectedTagsChanged(val) {
+  onSelectedTagsChanged(val: string[]) {
     this.$emit('update:value', val);
   }
 
-  toggle(tag) {
+  toggle(tag: string) {
     const index = this.selectedTags.indexOf(tag);
     if (index < 0) {
       this.selectedTags.push(tag);
@@ -41,10 +41,10 @@ export default class Tags extends Vue {
     if (tag === null) {return;}
     if (tag.trim() === '') {
       window.alert('标签名不能为空');
-    } else if (this.dataSource.indexOf(tag.trim()) >= 0) {
+    } else if (this.dataSource!.indexOf(tag.trim()) >= 0) {
       window.alert(`"${tag.trim()}"标签已存在`);
     } else {
-      this.$emit('update:dataSource', [...this.dataSource, tag]);
+      this.$emit('update:dataSource', [...this.dataSource!, tag]);
     }
   }
 }

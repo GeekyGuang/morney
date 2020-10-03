@@ -34,11 +34,12 @@ import {Component, Prop} from 'vue-property-decorator';
 
 @Component
 export default class NumberPad extends Vue {
-  @Prop() readonly value: number;
+  @Prop() readonly value!: number;
   output = this.value.toString();
 
   outputChange(event: MouseEvent) {
-    const input = event.target.textContent;
+    const button = event.target as HTMLButtonElement
+    const input = button.textContent!;
     if (this.output.length === 16) {return;}
     if (this.output === '0') {
       if ('0123456789'.indexOf(input) >= 0) {
@@ -94,7 +95,7 @@ export default class NumberPad extends Vue {
     const Index = this.output.lastIndexOf(operator);
     const number1 = Number(this.output.slice(0, Index));
     const number2 = Number(this.output.slice(Index + 1));
-    let result;
+    let result = 0;
     if (operator === '+') {
       result = number1 + number2;
     } else if (operator === '-') {
