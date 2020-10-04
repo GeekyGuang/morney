@@ -1,5 +1,10 @@
 <template>
-  <layout>编辑标签</layout>
+  <layout>
+    <div>
+      <icon name="left"/>
+      <span>编辑标签</span>
+    </div>
+  </layout>
 </template>
 
 <script lang="ts">
