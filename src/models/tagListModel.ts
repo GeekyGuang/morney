@@ -11,7 +11,7 @@ type tagListModel = {
   save: () => void;  // void代表不返回
   create: (name: string) => "success" | "duplicated";
   update: (id: string,name: string) => "success" | "not found" | "duplicated";
-
+  remove: (id: string) => boolean;
 }
 
 const tagListModel: tagListModel = {
@@ -40,6 +40,18 @@ const tagListModel: tagListModel = {
     this.data.push({id: name, name: name});
     this.save();
     return "success";
+  },
+  remove(id: string) {
+    let index = -1;
+    for(let i = 0; i < this.data.length; i++){
+      if(this.data[i].id === id){
+        index = i;
+        break;
+      }
+    }
+    this.data.splice(index, 1);
+    this.save();
+    return true;
   }
 };
 
