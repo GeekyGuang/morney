@@ -22,7 +22,7 @@ import recordListModel from '@/models/recordListModel';
 import tagListModel from '@/models/tagListModel';
 
 const tags = tagListModel.fetch();
-const recordList = recordListModel.fetch();
+const recordList = window.tagList;
 
 @Component({
       components: {Tags, FormItem, Types, NumberPad}
